@@ -19,6 +19,8 @@ void enableRawMode()
 {
   struct termios *terminal = getTerminal();
   terminal -> c_lflag &= ~(ECHO | ICANON);
+  terminal -> c_cc[VMIN] = 0;
+  terminal -> c_cc[VTIME] = 1;
   setTerminal(terminal);
   free(terminal);
 }
@@ -67,7 +69,8 @@ void InputReader::directInputDetector()
 {
   char c;
   // get character c
-  read(STDIN_FILENO, &c, 1);
-  // give char to manipulator
-  this -> manipulator -> feed_raw(c);
+  if(read(STDIN_FILENO, &c, 1))
+  {
+    this -> manipulator -> feed_raw(c);
+  }
 }

@@ -1,4 +1,5 @@
 #include <manipulator.hpp>
+#include <main.hpp>
 
 Manipulator::Manipulator()
 {
@@ -16,9 +17,14 @@ void Manipulator::panic()
 
 void Manipulator::feed_raw(char c)
 {
-  if(c == 4) // ctrl + D
+  if(c == 0x04) // ctrl + D - panic
   {
     panic();
+    return;
+  }
+  if(c == 0x1B) // esc - terminate
+  {
+    terminate_main();
     return;
   }
   manipulator_lock.lock();
