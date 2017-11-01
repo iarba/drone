@@ -2,6 +2,7 @@
 #define MANIPULATOR_HPP
 
 #include <mutex>
+#include <engine.hpp>
 using namespace std;
 
 /* Manipulator
@@ -13,12 +14,16 @@ using namespace std;
 
 class Manipulator{
   public:
-  Manipulator();
+  Manipulator(Engine **engines);
   ~Manipulator();
   void panic(); // to be called in times of trouble
   void feed_raw(char c);
   private:
   mutex manipulator_lock;
+  Engine *fl; // front left
+  Engine *fr; // front right
+  Engine *bl; // back left
+  Engine *br; // back right
 };
 
 #endif

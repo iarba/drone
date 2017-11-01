@@ -6,6 +6,8 @@ Engine::Engine(int pin1, int pin2, int pin3)
   this -> pin2 = pin2;
   this -> pin3 = pin3;
   this -> engine_thread = NULL;
+  fresh_pow = 0;
+  fresh_freq = 0;
 }
 
 Engine::~Engine()
@@ -44,12 +46,13 @@ void Engine::set_mod(double pow, double freq)
   engine_lock.unlock();
 }
 
-void Engine::start()
+Engine *Engine::start()
 {
   if(!engine_thread)
   {
     engine_thread = new thread(&Engine::duty, this);
   }
+  return this;
 }
 
 void Engine::stop()
@@ -58,6 +61,14 @@ void Engine::stop()
   engine_thread -> join();
   delete engine_thread;
   engine_thread = NULL;
+}
+
+thread *Engine::stop_nb()
+{
+  kill_lock.lock();
+  thread *value = engine_thread;
+  engine_thread = NULL;
+  return value;
 }
 
 void Engine::duty()

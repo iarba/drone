@@ -13,8 +13,9 @@ class Engine{
   double get_mod_pow(); // the width of the modulation, in % of available power.
   double get_mod_freq(); // the frequency of the modulation, in hz.
   void set_mod(double pow, double freq); // set new details. negative ignored.
-  void start();
+  Engine *start();
   void stop();
+  thread *stop_nb(); // nonblocking stop, useful when stopping all engines.
   private:
   void duty();
   mutex engine_lock;
