@@ -1,18 +1,17 @@
 #ifndef INPUTREADER_HPP
 #define INPUTREADER_HPP
 
-typedef void * MANIPTYPE;
-
 #include <thread>
 #include <mutex>
 #include <cstdio>
 #include <termios.h>
+#include <manipulator.hpp>
 
 using namespace std;
 
 class InputReader{
   public:
-  InputReader(MANIPTYPE manipulator);
+  InputReader(Manipulator *manipulator);
   ~InputReader();
   void start();
   void end();
@@ -24,7 +23,7 @@ class InputReader{
   /* variables */
   thread *listener_thread;
   mutex input_lock;
-  MANIPTYPE manipulator;
+  Manipulator *manipulator;
   struct termios *backup;
 };
 

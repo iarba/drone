@@ -10,18 +10,20 @@ struct termios *getTerminal()
   return terminal;
 }
 
-void setTerminal(struct termios *setting){
+void setTerminal(struct termios *setting)
+{
   tcsetattr(STDIN_FILENO, TCSAFLUSH, setting);
 }
 
-void enableRawMode() {
+void enableRawMode()
+{
   struct termios *terminal = getTerminal();
   terminal -> c_lflag &= ~(ECHO | ICANON);
   setTerminal(terminal);
   free(terminal);
 }
 
-InputReader::InputReader(MANIPTYPE manipulator)
+InputReader::InputReader(Manipulator *manipulator)
 {
   this -> listener_thread = NULL;
   this -> manipulator = manipulator;
@@ -67,5 +69,5 @@ void InputReader::directInputDetector()
   // get character c
   read(STDIN_FILENO, &c, 1);
   // give char to manipulator
-  printf("got %c or %hhX \n", c, c);
+  this -> manipulator -> feed_raw(c);
 }

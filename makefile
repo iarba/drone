@@ -5,19 +5,20 @@ BINDIR = bin
 RM     = rm -rf
 TARGET = $(BINDIR)/drone
 HEADER = $(wildcard $(SRCDIR)/*.hpp)
+SOURCE = $(wildcard $(SRCDIR)/*.cpp)
+OBJECT = $(patsubst %.cpp,%.o, $(patsubst $(SRCDIR)/%,$(BINDIR)/%, $(SOURCE)))
 RUNFLG = 
 IGNORE = >>run.l 2>&1
 EFLAGS = -pthread # -lwiringPi
 CFLAGS = -Wall -Werror -I $(SRCDIR)/ -std=c++11
-OBJECT = $(BINDIR)/main.o $(BINDIR)/inputReader.o
 
-.phony: all
+.PHONY: all
 all: build 
 
-.phony: build
-build: installdirs $(TARGET) $(TESTS)
+.PHONY: build
+build: installdirs $(TARGET)
 
-.phony: installdirs
+.PHONY: installdirs
 installdirs: $(BINDIR)
 
 $(BINDIR):
@@ -26,12 +27,9 @@ $(BINDIR):
 $(TARGET): $(OBJECT)
 	$(CC) $(CFLAGS) $^ $(LIBS) -o $@ $(EFLAGS)
 
-$(BINDIR)/main.o: $(SRCDIR)/main.cpp $(HEADER)
+$(BINDIR)/%.o: $(SRCDIR)/%.cpp $(HEADER)
 	$(CC) $(CFLAGS) -c $< -o $@ $(EFLAGS)
 
-$(BINDIR)/inputReader.o: $(SRCDIR)/inputReader.cpp $(HEADER)
-	$(CC) $(CFLAGS) -c $< -o $@ $(EFLAGS)
-
-.phony: clean
+.PHONY: clean
 clean:
 	$(RM) $(BINDIR)
