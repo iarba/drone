@@ -1,13 +1,20 @@
 #include <engine.hpp>
+#include <event.hpp>
 
-Engine::Engine(int pin1, int pin2, int pin3)
+Engine::Engine(int pin1, int pin2, int pin3, int id)
 {
   this -> pin1 = pin1;
   this -> pin2 = pin2;
   this -> pin3 = pin3;
   this -> engine_thread = NULL;
+  this -> id = id;
   fresh_pow = 10;
   fresh_freq = 0;
+  (new Event(E_MOTOR_SET))
+    -> with_id(id)
+    -> with_power(fresh_pow)
+    -> with_freq(fresh_freq)
+    -> dispatch();
 }
 
 Engine::~Engine()
@@ -44,6 +51,11 @@ void Engine::set_mod(double pow, double freq)
     this -> fresh_freq = freq;
   }
   engine_lock.unlock();
+  (new Event(E_MOTOR_SET))
+    -> with_id(id)
+    -> with_power(fresh_pow)
+    -> with_freq(fresh_freq)
+    -> dispatch();
 }
 
 Engine *Engine::start()

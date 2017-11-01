@@ -1,5 +1,8 @@
 #include <manipulator.hpp>
 #include <main.hpp>
+#include <event.hpp>
+#include <iostream>
+#include <sstream>
 
 /* Layout:
  *
@@ -95,7 +98,11 @@ void Manipulator::feed_raw(char c)
       manipulator_lock.unlock();
       return;
   }
-  printf("got unidentified raw [%hhX] \n", c);
+  stringstream ss;
+  ss<< hex << c;
+  (new Event(E_INPUT_UNK))
+    -> with_message("got unidentified keypress [" + ss.str() +"]")
+    -> dispatch();
 }
 
 void Manipulator::pitch_m()

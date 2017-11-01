@@ -8,7 +8,7 @@ using namespace std;
 
 class Engine{
   public:
-  Engine(int pin1, int pin2, int pin3);
+  Engine(int pin1, int pin2, int pin3, int id);
   ~Engine();
   double get_mod_pow(); // the width of the modulation, in % of available power.
   double get_mod_freq(); // the frequency of the modulation, in hz.
@@ -24,6 +24,7 @@ class Engine{
   int pin1;
   int pin2;
   int pin3;
+  int id;
   thread *engine_thread;
   mutex kill_lock;
 };
