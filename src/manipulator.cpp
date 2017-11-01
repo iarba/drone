@@ -4,13 +4,13 @@
 /* Layout:
  *
  * *--------------*
- * |E0    /\    E1|
+ * |E0<   /\   >E1|
  * |              |
  * |              |
  * |              |
  * |              |
  * |              |
- * |E2          E3|
+ * |E2>        <E3|
  * *--------------*
  *
  */
@@ -21,6 +21,7 @@ Manipulator::Manipulator(Engine **engines)
   this -> fr = engines[1] -> start(); // front right
   this -> bl = engines[2] -> start(); // back left
   this -> br = engines[3] -> start(); // back right
+  this -> selector = -1;
 }
 
 Manipulator::~Manipulator()
@@ -58,7 +59,134 @@ void Manipulator::feed_raw(char c)
     terminate_main();
     return;
   }
-  manipulator_lock.lock();
-  printf("got %c or %hhX \n", c, c);
-  manipulator_lock.unlock();
+  switch(c)
+  {
+    /* pitch control */
+    case 'w':
+      return pitch_m();
+    case 's':
+      return pitch_p();
+    /* roll control */
+    case 'a':
+      return roll_m();
+    case 'd':
+      return roll_p();
+    /* yaw control */
+    case 'q':
+      return yaw_m();
+    case 'e':
+      return yaw_p();
+    /* power control */
+    case '.':
+      return pow_m(selector);
+    case ',':
+      return pow_p(selector);
+    case '1':
+    case '2':
+    case '3':
+    case '4':
+      manipulator_lock.lock();
+      selector = (int)(c - '1');
+      manipulator_lock.unlock();
+      return;
+    case '`':
+      manipulator_lock.lock();
+      selector = -1;
+      manipulator_lock.unlock();
+      return;
+  }
+  printf("got unidentified raw [%hhX] \n", c);
+}
+
+void Manipulator::pitch_m()
+{
+  pow_m(0);
+  pow_m(1);
+  pow_p(2);
+  pow_p(3);
+}
+
+void Manipulator::pitch_p()
+{
+  pow_p(0);
+  pow_p(1);
+  pow_m(2);
+  pow_m(3);
+}
+
+void Manipulator::roll_m()
+{
+  pow_p(0);
+  pow_m(1);
+  pow_p(2);
+  pow_m(3);
+}
+
+void Manipulator::roll_p()
+{
+  pow_m(0);
+  pow_p(1);
+  pow_m(2);
+  pow_p(3);
+}
+
+void Manipulator::yaw_m()
+{
+  pow_m(0);
+  pow_p(1);
+  pow_p(2);
+  pow_m(3);
+}
+
+void Manipulator::yaw_p()
+{
+  pow_p(0);
+  pow_m(1);
+  pow_m(2);
+  pow_p(3);
+}
+
+void Manipulator::pow_m(int sel)
+{
+  if(sel == -1)
+  {
+    pow_m(0);
+    pow_m(1);
+    pow_m(2);
+    pow_m(3);
+    return;
+  }
+  Engine *e = select_engine(sel);
+  e -> set_mod(e -> get_mod_pow() / 1.1, (e -> get_mod_pow() - 10) / 1.1);
+}
+
+void Manipulator::pow_p(int sel)
+{
+  if(sel == -1)
+  {
+    pow_p(0);
+    pow_p(1);
+    pow_p(2);
+    pow_p(3);
+    return;
+  }
+  Engine *e = select_engine(sel);
+  e -> set_mod(e -> get_mod_pow() * 1.1, e -> get_mod_pow() * 1.1 + 10);
+}
+
+Engine *Manipulator::select_engine(int sel)
+{
+  switch (sel)
+  {
+    case 0:
+      return fl;
+    case 1:
+      return fr;
+    case 2:
+      return bl;
+    case 3:
+      return br;
+    default:
+      return NULL;
+  }
 }

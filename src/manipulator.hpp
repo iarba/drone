@@ -18,12 +18,23 @@ class Manipulator{
   ~Manipulator();
   void panic(); // to be called in times of trouble
   void feed_raw(char c);
+  /* public, but handle with care */
+  void pitch_m();
+  void pitch_p();
+  void roll_m();
+  void roll_p();
+  void yaw_m();
+  void yaw_p();
+  void pow_m(int sel);
+  void pow_p(int sel);
   private:
+  Engine *select_engine(int sel);
   mutex manipulator_lock;
   Engine *fl; // front left
   Engine *fr; // front right
   Engine *bl; // back left
   Engine *br; // back right
+  int selector;
 };
 
 #endif

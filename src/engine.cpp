@@ -6,7 +6,7 @@ Engine::Engine(int pin1, int pin2, int pin3)
   this -> pin2 = pin2;
   this -> pin3 = pin3;
   this -> engine_thread = NULL;
-  fresh_pow = 0;
+  fresh_pow = 10;
   fresh_freq = 0;
 }
 
@@ -73,7 +73,7 @@ thread *Engine::stop_nb()
 
 void Engine::duty()
 {
-  double active_pow = 0;
+  double active_pow = 10;
   double active_freq = 0;
   while(kill_lock.try_lock())
   {
