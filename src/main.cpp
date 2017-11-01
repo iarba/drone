@@ -3,6 +3,7 @@
 #include <manipulator.hpp>
 #include <cstdio>
 #include <mutex>
+#include <csignal>
 
 using namespace std;
 
@@ -20,6 +21,7 @@ void terminate_main()
 int main(int argc, char **argv)
 {
   printf("I believe I can fly!\n");
+  signal(SIGINT, [](int sig) -> void{terminate_main();});
   Engine **engines = new Engine *[4];
   engines[0] = new Engine( 1,  2,  3);
   engines[1] = new Engine( 4,  5,  6);
