@@ -7,7 +7,7 @@ TARGET = $(BINDIR)/drone
 HEADER = $(wildcard $(SRCDIR)/*.hpp)
 RUNFLG = 
 IGNORE = >>run.l 2>&1
-EFLAGS = -lpthread -lwiringPi
+EFLAGS = -pthread # -lwiringPi
 CFLAGS = -Wall -Werror -I $(SRCDIR)/ -std=c++11
 OBJECT = $(BINDIR)/main.o $(BINDIR)/inputReader.o
 
