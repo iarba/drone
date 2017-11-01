@@ -42,11 +42,11 @@ double Engine::get_mod_freq()
 void Engine::set_mod(double pow, double freq)
 {
   engine_lock.lock();
-  if(pow >= 0)
+  if((pow >= 0) && (pow <= 90))
   {
     this -> fresh_pow = pow;
   }
-  if(freq >= 0)
+  if((freq >= 0) && (freq <= 500))
   {
     this -> fresh_freq = freq;
   }

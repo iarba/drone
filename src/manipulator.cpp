@@ -80,9 +80,9 @@ void Manipulator::feed_raw(char c)
     case 'e':
       return yaw_p();
     /* power control */
-    case '.':
-      return pow_m(selector);
     case ',':
+      return pow_m(selector);
+    case '.':
       return pow_p(selector);
     case '1':
     case '2':
@@ -164,7 +164,10 @@ void Manipulator::pow_m(int sel)
     return;
   }
   Engine *e = select_engine(sel);
-  e -> set_mod(e -> get_mod_pow() / 1.1, (e -> get_mod_pow() - 10) / 1.1);
+  e -> set_mod(
+       e -> get_mod_pow() / POW_RATE,
+       (e -> get_mod_freq() - FREQ_FLAT) / FREQ_RATE
+  );
 }
 
 void Manipulator::pow_p(int sel)
@@ -178,7 +181,10 @@ void Manipulator::pow_p(int sel)
     return;
   }
   Engine *e = select_engine(sel);
-  e -> set_mod(e -> get_mod_pow() * 1.1, e -> get_mod_pow() * 1.1 + 10);
+  e -> set_mod(
+       e -> get_mod_pow() * POW_RATE, 
+       e -> get_mod_freq() * FREQ_RATE + FREQ_FLAT
+  );
 }
 
 Engine *Manipulator::select_engine(int sel)
