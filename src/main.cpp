@@ -4,6 +4,7 @@
 #include <cstdio>
 #include <mutex>
 #include <csignal>
+#include <wiringPi.h>
 
 using namespace std;
 
@@ -24,6 +25,7 @@ int main(int argc, char **argv)
 {
   printf("I believe I can fly!\n");
   ui = new UI();
+  wiringPiSetup();
   signal(SIGINT, [](int sig) -> void{terminate_main();});
   Engine **engines = new Engine *[4];
   engines[0] = new Engine( 1,  2,  3, 0);

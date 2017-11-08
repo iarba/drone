@@ -1,11 +1,16 @@
 #include <engine.hpp>
 #include <event.hpp>
+#include <timing.hpp>
+#include <wiringPi.h>
 
 Engine::Engine(int pin1, int pin2, int pin3, int id)
 {
   this -> pin1 = pin1;
   this -> pin2 = pin2;
   this -> pin3 = pin3;
+  pinMode(pin1, OUTPUT);
+  pinMode(pin2, OUTPUT);
+  pinMode(pin3, OUTPUT);
   this -> engine_thread = NULL;
   this -> id = id;
   fresh_pow = 10;
@@ -19,6 +24,9 @@ Engine::Engine(int pin1, int pin2, int pin3, int id)
 
 Engine::~Engine()
 {
+  digitalWrite(pin1, LOW);
+  digitalWrite(pin2, LOW);
+  digitalWrite(pin3, LOW);
 }
 
 double Engine::get_mod_pow()
