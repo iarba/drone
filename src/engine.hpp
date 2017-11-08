@@ -17,6 +17,7 @@ class Engine{
   void stop();
   thread *stop_nb(); // nonblocking stop, useful when stopping all engines.
   private:
+  int cycle_pin(int last_pin);
   void duty();
   mutex engine_lock;
   double fresh_pow;

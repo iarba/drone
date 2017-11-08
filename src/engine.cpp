@@ -2,6 +2,7 @@
 #include <event.hpp>
 #include <timing.hpp>
 #include <wiringPi.h>
+#include <constant.hpp>
 
 Engine::Engine(int pin1, int pin2, int pin3, int id)
 {
@@ -91,10 +92,30 @@ thread *Engine::stop_nb()
   return value;
 }
 
+int Engine::cycle_pin(int last_pin)
+{
+  if(last_pin == pin1)
+  {
+    return pin2;
+  }
+  if(last_pin == pin2)
+  {
+    return pin3;
+  }
+  if(last_pin == pin3)
+  {
+    return pin1;
+  }
+  /* shouldn't happen, but better be safe */
+  return pin1;
+}
+
 void Engine::duty()
 {
   double active_pow = 10;
   double active_freq = 0;
+  long t_time, p_time;
+  int next_pin = pin1;
   while(kill_lock.try_lock())
   {
     kill_lock.unlock();
@@ -109,5 +130,12 @@ void Engine::duty()
       this_thread::yield();
       continue;
     }
+    t_time = (long)((double)NU_IN_U / active_freq);
+    p_time = (long)((double)t_time * active_pow / 100);
+    digitalWrite(next_pin, HIGH);
+    safe_sleep(p_time);
+    digitalWrite(next_pin, LOW);
+    safe_sleep(t_time - p_time);
+    next_pin = cycle_pin(next_pin);
   }
 }
