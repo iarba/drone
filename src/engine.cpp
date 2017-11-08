@@ -12,6 +12,7 @@ Engine::Engine(int pin1, int pin2, int pin3, int id)
   pinMode(pin1, OUTPUT);
   pinMode(pin2, OUTPUT);
   pinMode(pin3, OUTPUT);
+  reset();
   this -> engine_thread = NULL;
   this -> id = id;
   fresh_pow = 10;
@@ -24,6 +25,11 @@ Engine::Engine(int pin1, int pin2, int pin3, int id)
 }
 
 Engine::~Engine()
+{
+  reset();
+}
+
+void Engine::reset()
 {
   digitalWrite(pin1, LOW);
   digitalWrite(pin2, LOW);

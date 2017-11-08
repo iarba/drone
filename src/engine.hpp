@@ -10,6 +10,7 @@ class Engine{
   public:
   Engine(int pin1, int pin2, int pin3, int id);
   ~Engine();
+  void reset();
   double get_mod_pow(); // the width of the modulation, in % of available power.
   double get_mod_freq(); // the frequency of the modulation, in hz.
   void set_mod(double pow, double freq); // set new details. negative ignored.
