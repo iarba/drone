@@ -4,9 +4,6 @@
 #include <mutex>
 #include <engine.hpp>
 
-#define POW_RATE 1.04
-#define FREQ_RATE 1.06
-#define FREQ_FLAT 5
 using namespace std;
 
 /* Manipulator

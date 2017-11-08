@@ -1,6 +1,7 @@
 #include <manipulator.hpp>
 #include <main.hpp>
 #include <event.hpp>
+#include <constant.hpp>
 #include <iostream>
 #include <sstream>
 
