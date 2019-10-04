@@ -9,11 +9,19 @@ SOURCE = $(wildcard $(SRCDIR)/*.cpp)
 OBJECT = $(patsubst %.cpp,%.o, $(patsubst $(SRCDIR)/%,$(BINDIR)/%, $(SOURCE)))
 RUNFLG = 
 IGNORE = >>run.l 2>&1
-EFLAGS = 
 CFLAGS = -Wall -Werror -I $(SRCDIR)/ -std=c++11
+EFLAGS = 
+ifndef nowiringPi
+CFLAGS := $(CFLAGS) -D wiring
+EFLAGS := $(EFLAGS) -lwiringPi
+endif
 
 .PHONY: all
 all: build 
+
+.PHONY: nat
+emul: 
+	$(MAKE) build nowiringPi=true
 
 .PHONY: build
 build: installdirs $(TARGET)
