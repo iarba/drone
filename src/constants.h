@@ -3,9 +3,12 @@
 
 #define NU_IN_U 1000000000 // nanounits in an unit
 
-#define POW_RATE 1.04
-#define FREQ_RATE 1.06
-#define FREQ_FLAT 5
+#define P_UP 33
+#define P_DOWN 67
+
+#define ROT_THRESHOLD 100000
+
+#define N_ENGINES 4
 
 /* pin definitions */
 /* Engine 1, front left */

@@ -1,6 +1,8 @@
 #include "manipulator.h"
 #include "constants.h"
 #include <cstdio>
+#include <chrono>
+#include <thread>
 
 #define fl 0
 #define fr 1
@@ -44,17 +46,24 @@ void Manipulator::panic()
   exit(0);
 }
 
-void Manipulator::loop()
+void Manipulator::start()
 {
+  this -> engines[0] -> set_rot(10000); // DEBUG
   for(int ts = 0; true; ts++)
   {
-    // TODO: probe sensors
-    // TODO: process feedback
-    // TODO: alter internal representation
-    // TODO: adapt engines to fit internal representation
-    for(int i = 0; i < N_ENGINES; i++)
-    {
-      this -> engines[i] -> duty(ts);
-    }
+    std::this_thread::sleep_for(std::chrono::microseconds(10));
+    this -> loop(ts);
+  }
+}
+
+void Manipulator::loop(int ts)
+{
+  // TODO: probe sensors
+  // TODO: process feedback
+  // TODO: alter internal representation
+  // TODO: adapt engines to fit internal representation
+  for(int i = 0; i < N_ENGINES; i++)
+  {
+    this -> engines[i] -> duty(ts);
   }
 }

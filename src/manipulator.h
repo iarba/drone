@@ -1,9 +1,8 @@
 #ifndef MANIPULATOR_H
 #define MANIPULATOR_H
 
-#define N_ENGINES 4
-
 #include "engine.h"
+#include "constants.h"
 
 /* Manipulator
  * 
@@ -17,8 +16,9 @@ class Manipulator{
   Manipulator();
   ~Manipulator();
   void panic(); // to be called in times of trouble
+  void start();
   private:
-  void loop();
+  void loop(int ts);
   Engine *engines[N_ENGINES];
 };
 
