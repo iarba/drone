@@ -1,5 +1,5 @@
-#ifndef CONSTANT_HPP
-#define CONSTANT_HPP
+#ifndef CONSTANT_H
+#define CONSTANT_H
 
 #define NU_IN_U 1000000000 // nanounits in an unit
 
@@ -8,11 +8,11 @@
 #define FREQ_FLAT 5
 
 /* pin definitions */
-/* Engine 1, up left */
+/* Engine 1, front left */
 #define E1P1 0
 #define E1P2 2
 #define E1P3 3
-/* Engine 2, up right */
+/* Engine 2, front right */
 #define E2P1 1
 #define E2P2 4
 #define E2P3 5

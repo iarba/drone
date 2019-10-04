@@ -1,7 +1,4 @@
 #include "engine.h"
-#include <event.hpp>
-#include <timing.hpp>
-#include <constant.hpp>
 #include "wire.h"
 
 #define STAGES 6

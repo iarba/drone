@@ -9,7 +9,7 @@ SOURCE = $(wildcard $(SRCDIR)/*.cpp)
 OBJECT = $(patsubst %.cpp,%.o, $(patsubst $(SRCDIR)/%,$(BINDIR)/%, $(SOURCE)))
 RUNFLG = 
 IGNORE = >>run.l 2>&1
-EFLAGS = -pthread -lwiringPi
+EFLAGS = 
 CFLAGS = -Wall -Werror -I $(SRCDIR)/ -std=c++11
 
 .PHONY: all
